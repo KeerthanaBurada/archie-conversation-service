@@ -235,11 +235,11 @@ Response:
 Environment variables:
 
 ```env
-VARSHITHA_BASE_URL=https://sesson-handling.onrender.com
+SESSION_SERVICE_URL=https://sesson-handling.onrender.com
 
-API_KEY=YOUR_API_KEY
+SESSION_SERVICE_API_KEY=YOUR_API_KEY
 
-SHUBH_AI_URL=http://localhost:8001/chat
+AI_ENGINE_URL=http://localhost:8001/chat
 ```
 
 ---

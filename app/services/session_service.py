@@ -1,19 +1,19 @@
 import requests
 
 from app.config import (
-    API_KEY,
-    VARSHITHA_BASE_URL
+    SESSION_SERVICE_API_KEY,
+    SESSION_SERVICE_URL
 )
 
 headers = {
-    "X-API-Key": API_KEY
+    "X-API-Key": SESSION_SERVICE_API_KEY
 }
 
 
 def get_session_payload(session_id: str):
 
     response = requests.post(
-        f"{VARSHITHA_BASE_URL}/api/sessions/{session_id}/send",
+        f"{SESSION_SERVICE_URL}/api/sessions/{session_id}/send",
         headers=headers
     )
 

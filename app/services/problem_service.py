@@ -1,19 +1,19 @@
 import requests
 
 from app.config import (
-    API_KEY,
-    VARSHITHA_BASE_URL
+    SESSION_SERVICE_API_KEY,
+    SESSION_SERVICE_URL
 )
 
 headers = {
-    "X-API-Key": API_KEY
+    "X-API-Key": SESSION_SERVICE_API_KEY
 }
 
 
 def get_problem(problem_id: str):
 
     response = requests.get(
-        f"{VARSHITHA_BASE_URL}/api/problems/{problem_id}",
+        f"{SESSION_SERVICE_URL}/api/problems/{problem_id}",
         headers=headers
     )
 

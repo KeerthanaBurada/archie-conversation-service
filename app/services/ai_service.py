@@ -1,12 +1,12 @@
 import requests
 
-from app.config import SHUBH_AI_URL
+from app.config import AI_ENGINE_URL
 
 
 def send_to_ai(payload):
 
     response = requests.post(
-        SHUBH_AI_URL,
+        AI_ENGINE_URL,
         json=payload,
         timeout=60
     )
