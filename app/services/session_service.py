@@ -1,5 +1,9 @@
 import requests
-from app.config import API_KEY, VARSHITHA_BASE_URL
+
+from app.config import (
+    API_KEY,
+    VARSHITHA_BASE_URL
+)
 
 headers = {
     "X-API-Key": API_KEY
