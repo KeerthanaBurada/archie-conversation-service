@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SESSION_SERVICE_URL = os.getenv(
     "SESSION_SERVICE_URL",
