@@ -284,7 +284,3 @@ http://127.0.0.1:8000/docs
 - End-to-end interview flow testing
 - Streaming response support
 - Production deployment
-
-```
-
-```
