@@ -93,7 +93,7 @@ def interview(session_id: str):
 
         return {
             "status": "success",
-            "response": ai_response
+            "reply": ai_response["reply"]
         }
 
     except Exception as e:

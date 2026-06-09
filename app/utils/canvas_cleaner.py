@@ -6,7 +6,10 @@ def clean_canvas(canvas_snapshot):
 
         nodes.append({
             "id": node.get("id"),
-            "label": node.get("label")
+            "type": node.get("type", "component"),
+            "data": {
+                "label": node.get("label", "")
+            }
         })
 
     edges = []
@@ -14,8 +17,8 @@ def clean_canvas(canvas_snapshot):
     for edge in canvas_snapshot.get("edges", []):
 
         edges.append({
-            "source": edge.get("source"),
-            "target": edge.get("target")
+            "source": edge.get("from"),
+            "target": edge.get("to")
         })
 
     return {
