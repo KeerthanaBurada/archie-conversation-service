@@ -1,286 +1,196 @@
-# Archie Conversation Layer
-
-The Archie Conversation Layer is responsible for orchestrating communication between the session management service and the AI interview engine.
-
-It retrieves session context, enriches it with problem details, processes canvas snapshots, and produces a standardized AI-ready payload that can be consumed by the interview engine.
+# Frontend Integration & C1 Contract Migration
+### Demo by Keerthana
 
 ---
 
-# Responsibilities
+# Overview
 
-- Retrieve session history from the Session Management Service
-- Fetch complete problem context
-- Extract and process the latest canvas snapshot
-- Build standardized AI payloads
-- Forward payloads to the AI Interview Engine
-- Provide integration endpoints for testing and debugging
+My primary contribution to Archie was integrating the frontend with the backend after major backend changes.
+
+Instead of building new UI screens, I focused on ensuring the frontend and backend communicated correctly using a single C1 Canvas Contract while resolving merge conflicts and rebasing onto the latest main branch.
 
 ---
 
-# Architecture
+# My Contributions
 
-```text
+## 1. C1 Canvas Contract Migration
+
+Migrated the frontend to use the standardized C1 Canvas Contract.
+
+### Canvas Nodes
+
+```json
+{
+  "id": "n1",
+  "type": "service",
+  "label": "API Server"
+}
+```
+
+### Canvas Edges
+
+```json
+{
+  "from": "n1",
+  "to": "n2",
+  "direction": "one-way"
+}
+```
+
+This ensures both frontend and backend follow the exact same schema.
+
+---
+
+## 2. Frontend ↔ Backend Integration
+
+Integrated the React frontend with the FastAPI backend.
+
+Flow:
+
+Candidate
+
+↓
+
 Frontend
-    ↓
-Session Management Service
-    ↓
-Archie Conversation Layer
-    ↓
-AI Interview Engine
-```
+
+↓
+
+POST /chat
+
+↓
+
+FastAPI Backend
+
+↓
+
+Turn Loop
+
+↓
+
+Canvas Parser
+
+↓
+
+Architecture Analyzer
+
+↓
+
+Interview Engine
+
+↓
+
+LLM Provider
+
+↓
+
+AI Response
+
+↓
+
+Frontend
 
 ---
 
-# Payload Contract
+## 3. Chat Integration
 
-The conversation layer produces a standardized payload for the AI engine.
+Updated the frontend chat integration after the backend API changed.
 
-```json
-{
-  "session_id": "...",
+Changes made:
 
-  "problem": {
-    "id": "...",
-    "title": "...",
-    "description": "...",
-    "requirements": [],
-    "constraints": []
-  },
-
-  "chat_history": [],
-
-  "canvas_snapshot": {
-    "nodes": [],
-    "edges": []
-  }
-}
-```
+- Updated request payload
+- Updated response handling
+- Fixed frontend-backend communication
+- Verified AI responses display correctly
 
 ---
 
-# Canvas Handling
+## 4. Rebase & Merge Integration
 
-The conversation layer consumes persisted canvas data and transforms it into the AI-facing C1 canvas format.
+The feature branch was significantly behind the latest main branch.
 
-## AI Canvas Snapshot (C1)
+Work completed:
 
-```json
-{
-  "nodes": [
-    {
-      "id": "n1",
-      "type": "service",
-      "label": "API Service"
-    }
-  ],
-
-  "edges": [
-    {
-      "id": "e1",
-      "from": "n1",
-      "to": "n2",
-      "direction": "one-way"
-    }
-  ]
-}
-```
-
-Only the information required for architectural reasoning is included in the AI payload.
-
-Persistence-specific metadata such as node coordinates and editor state are excluded.
+- Rebased onto latest main
+- Resolved merge conflicts
+- Preserved existing backend functionality
+- Re-applied only the C1 migration changes
+- Fixed integration issues after rebase
 
 ---
 
-# Project Structure
+## 5. Contract Alignment
 
-```text
-app/
-│
-├── main.py
-├── config.py
-│
-├── routes/
-│   └── interview.py
-│
-├── services/
-│   ├── session_service.py
-│   ├── problem_service.py
-│   ├── payload_builder.py
-│   └── ai_service.py
-│
-├── utils/
-│   └── canvas_cleaner.py
-│
-└── models/
-    └── payloads.py
-```
+Resolved multiple contract mismatches between frontend and backend.
+
+Examples:
+
+- from_field → from_
+- Updated frontend chat API to match backend response
+- Aligned frontend node types with backend C1 contract
+- Updated canvas payloads
+- Fixed API integration issues
 
 ---
 
-# Service Components
+# Challenges
 
-## session_service.py
+## Backend changed during development
 
-Responsible for retrieving session data from the session management service.
+The backend evolved while frontend integration was in progress.
 
-Provides:
+Solution:
 
-- Session history retrieval
-- Canvas snapshot retrieval
-- Session payload extraction
+Rebased the branch and aligned the frontend with the latest backend APIs.
 
 ---
 
-## problem_service.py
+## Schema mismatch
 
-Responsible for retrieving complete problem information.
+Frontend and backend temporarily used different contracts.
 
-Provides:
+Solution:
 
-- Problem metadata
-- Requirements
-- Constraints
-- Interview context
+Migrated everything to the C1 Canvas Contract.
 
 ---
 
-## payload_builder.py
+## Chat API changes
 
-Constructs the final AI payload.
+The backend response format changed.
 
-Responsibilities:
+Solution:
 
-- Merge session data
-- Merge problem context
-- Select latest canvas snapshot
-- Produce standardized payload
+Updated the frontend API client to consume the latest response format.
 
 ---
 
-## ai_service.py
+# Impact
 
-Responsible for communication with the AI interview engine.
-
-Responsibilities:
-
-- Send payloads to AI endpoint
-- Receive AI responses
-- Handle downstream integration
+- Unified C1 contract across frontend and backend
+- Stable frontend-backend communication
+- Successful integration after rebase
+- Reduced schema inconsistencies
+- Successfully merged into the latest main branch
 
 ---
 
-## interview.py
+# Live Demo
 
-Exposes API endpoints used for testing and orchestration.
-
----
-
-# API Endpoints
-
-## Health Check
-
-### GET /
-
-Returns service status.
-
-Response:
-
-```json
-{
-  "service": "Archie Conversation Service",
-  "status": "running"
-}
-```
+1. Open Archie
+2. Select a problem
+3. Draw components
+4. Connect components
+5. Send a message
+6. Receive AI response
 
 ---
 
-## Prepare AI Payload
+# Key Takeaways
 
-### GET /prepare-ai-payload/{session_id}
-
-Retrieves session data and generates the AI-ready payload.
-
-Response:
-
-```json
-{
-  "session_id": "...",
-  "problem": {...},
-  "chat_history": [...],
-  "canvas_snapshot": {...}
-}
-```
+- Frontend and backend now share a common C1 contract.
+- The integration layer remains compatible with the latest backend.
+- The architecture is easier to maintain because both sides communicate using a single standardized schema.
 
 ---
 
-## Interview Endpoint
-
-### POST /interview/{session_id}
-
-Generates the AI payload and forwards it to the AI interview engine.
-
-Response:
-
-```json
-{
-  "status": "success",
-  "response": {...}
-}
-```
-
----
-
-# Configuration
-
-Environment variables:
-
-```env
-SESSION_SERVICE_URL=https://sesson-handling.onrender.com
-
-SESSION_SERVICE_API_KEY=YOUR_API_KEY
-
-AI_ENGINE_URL=http://localhost:8001/chat
-```
-
----
-
-# Running Locally
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Start the service:
-
-```bash
-python -m uvicorn app.main:app --reload
-```
-
-Swagger UI:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-# Current Status
-
-## Completed
-
-- FastAPI service setup
-- Session service integration
-- Problem service integration
-- Payload generation
-- Canvas snapshot processing
-- Swagger documentation
-- Local API testing
-
-## In Progress
-
-- AI endpoint integration
-- End-to-end interview flow testing
-- Streaming response support
-- Production deployment
+# Thank You
